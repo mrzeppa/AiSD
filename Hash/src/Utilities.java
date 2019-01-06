@@ -105,11 +105,72 @@ class LastFewRecords{
     }
 }
 
+class ControlRecords{
+    private String number;
+    private String surname;
+
+    public ControlRecords(String number, String surname) {
+        this.number = number;
+        this.surname = surname;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    @Override
+    public String toString() {
+        return number +  " " + surname;
+    }
+}
+
+class EmptyControlRecords{
+    private String number;
+    private String surname;
+
+    public EmptyControlRecords(String number, String surname) {
+        this.number = number;
+        this.surname = surname;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    @Override
+    public String toString() {
+        return number +  " " + surname;
+    }
+}
 
 
 class FileSupport
 {
-    public void getRecordsFromFile(ArrayList<Record> a, ArrayList<EmptyRecord> b, ArrayList<LastFewRecords> c) {
+    public void getRecordsFromFile(ArrayList<Record> a, ArrayList<EmptyRecord> b, ArrayList<LastFewRecords> c, ArrayList<ControlRecords> d, ArrayList<EmptyControlRecords> f) {
         try (BufferedReader br = new BufferedReader(new FileReader("nazwiska.txt"))) {
             int lineCounter = 0;
             a.clear();
@@ -118,6 +179,11 @@ class FileSupport
 
             while ((line = br.readLine()) != null) {
                 String[] temp = line.split("\\s+");
+
+                if(lineCounter < 20 && lineCounter >= 0){
+                    d.add(new ControlRecords(temp[0], temp[1]));
+                    f.add(new EmptyControlRecords("0", "brak"));
+                }
 
                 if(lineCounter <= 16000) {
                     b.add(new EmptyRecord(temp[0], temp[1]));

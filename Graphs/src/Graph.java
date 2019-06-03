@@ -1,14 +1,11 @@
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 public class Graph {
-    private int V;   // No. of vertices
-
-    // Array  of lists for Adjacency List Representation
+    private int V;
     private LinkedList<Integer> adj[];
-
-    // Constructor
     Graph(int v)
     {
         V = v;
@@ -17,59 +14,45 @@ public class Graph {
             adj[i] = new LinkedList();
     }
 
-    void addEdge(int v, int w)
-    {
-        adj[v].add(w);  // Add w to v's list.
+    void addEdge(int v, int w) {
+        adj[v].add(w);
     }
 
-    void DFSUtil(int v,boolean visited[])
+    public void DFSUtil(int v,boolean visited[], StringBuilder sb)
     {
-        // Mark the current node as visited and print it
         visited[v] = true;
         System.out.print(v+" ");
-
-        // Recur for all the vertices adjacent to this vertex
         Iterator<Integer> i = adj[v].listIterator();
-        while (i.hasNext())
-        {
+
+        int j = 0;
+        while (i.hasNext()){
+            j++;
             int n = i.next();
-            if (!visited[n])
-                DFSUtil(n, visited);
+            if (!visited[n]){
+                sb.append("[ " + v + ", " + n + " ] ");
+                DFSUtil(n, visited, sb);
+            }
         }
     }
 
     void DFS(int v)
     {
-        // Mark all the vertices as not visited(set as
-        // false by default in java)
+        StringBuilder sb = new StringBuilder();
         boolean visited[] = new boolean[V];
-
-        // Call the recursive helper function to print DFS traversal
-        DFSUtil(v, visited);
+        DFSUtil(v, visited, sb);
+        System.out.println("\n" + sb.toString());
     }
 
-    void BFS(int s)
-    {
-        // Mark all the vertices as not visited(By default
-        // set as false)
+    void BFS(int s) {
+        StringBuilder sb = new StringBuilder();
         boolean visited[] = new boolean[V];
-
-        // Create a queue for BFS
         LinkedList<Integer> queue = new LinkedList<Integer>();
-
-        // Mark the current node as visited and enqueue it
         visited[s]=true;
         queue.add(s);
 
-        while (queue.size() != 0)
-        {
-            // Dequeue a vertex from queue and print it
+        while (queue.size() != 0) {
             s = queue.poll();
             System.out.print(s+" ");
-
-            // Get all adjacent vertices of the dequeued vertex s
-            // If a adjacent has not been visited, then mark it
-            // visited and enqueue it
             Iterator<Integer> i = adj[s].listIterator();
             while (i.hasNext())
             {
@@ -78,9 +61,11 @@ public class Graph {
                 {
                     visited[n] = true;
                     queue.add(n);
+                    sb.append("[ " + s + ", " + n + " ] ");
                 }
             }
         }
+        System.out.println("\n" + sb.toString());
     }
 
     public void printTree(){
@@ -92,4 +77,5 @@ public class Graph {
             System.out.println();
         }
     }
+
 }
